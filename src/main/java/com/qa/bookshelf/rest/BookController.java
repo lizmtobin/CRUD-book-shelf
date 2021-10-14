@@ -2,6 +2,8 @@ package com.qa.bookshelf.rest;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +30,8 @@ public class BookController {
 
 	// web integration
 	@PostMapping("/create")
-	public Book create(@RequestBody Book newBook) {
-		return this.service.create(newBook);
+	public ResponseEntity<Book> create(@RequestBody Book newBook) {
+		return new ResponseEntity<Book>(this.service.create(newBook), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/get/{id}")
@@ -43,13 +45,14 @@ public class BookController {
 	}
 
 	@PutMapping("/update/{id}")
-	public Book updateBook(@RequestBody Book newBook, @PathVariable Integer id) {
-		return this.service.updateBook(id, newBook);
+	public ResponseEntity<Book> updateBook(@RequestBody Book newBook, @PathVariable Integer id) {
+		return new ResponseEntity<Book>(this.service.updateBook(id, newBook), HttpStatus.ACCEPTED);
 	}
 
 	@DeleteMapping("/remove/{id}")
-	public boolean removeBook(@PathVariable Integer id) {
-		return this.service.removeBook(id);
+	public ResponseEntity<?> removeBook(@PathVariable Integer id) {
+		return this.service.removeBook(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
