@@ -49,4 +49,23 @@ public class ServiceUnitTest {
 		Mockito.verify(this.repo, Mockito.times(1)).findAll();
 	}
 
+	@Test
+	void testUpdate() { // REMEMBER TO OVERRIDE THE equals() METHOD IN YOUR ENTITY
+
+		final Integer id = 1;
+
+		Book book = new Book(id, "Design Patterns", "Freeman", 300, "Educational");
+		Optional<Book> optionalBook = Optional.of(book);
+
+		Book newBook = new Book(id, "Design Patterns", "Freeman", 300, "Educational");
+
+		Mockito.when(this.repo.findById(id)).thenReturn(optionalBook);
+		Mockito.when(this.repo.save(newBook)).thenReturn(newBook);
+
+		assertThat(this.service.updateBook(book.getId(), newBook)).isEqualTo(newBook);
+
+		Mockito.verify(this.repo, Mockito.times(1)).findById(id);
+		Mockito.verify(this.repo, Mockito.times(1)).save(newBook);
+	}
+
 }
