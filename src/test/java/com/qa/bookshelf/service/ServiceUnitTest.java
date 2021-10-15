@@ -26,6 +26,18 @@ public class ServiceUnitTest {
 	private BookRepo repo;
 
 	@Test
+	void testCreate() {
+		Book newBook = new Book(null, "Design Patterns", "Freeman", 300, "Educational");
+		Book savedBook = new Book(1, "Design Patterns", "Freeman", 300, "Educational");
+
+		Mockito.when(this.repo.save(newBook)).thenReturn(savedBook);
+
+		assertThat(this.service.create(newBook)).isEqualTo(savedBook);
+
+		Mockito.verify(this.repo, Mockito.times(1)).save(newBook);
+	}
+
+	@Test
 	void testGetById() {
 		final Integer Id = 1;
 		final Book book = new Book(Id, "Design Patterns", "Freeman", 300, "Educational");
@@ -50,7 +62,7 @@ public class ServiceUnitTest {
 	}
 
 	@Test
-	void testUpdate() { // REMEMBER TO OVERRIDE THE equals() METHOD IN YOUR ENTITY
+	void testUpdate() {
 
 		final Integer id = 1;
 
