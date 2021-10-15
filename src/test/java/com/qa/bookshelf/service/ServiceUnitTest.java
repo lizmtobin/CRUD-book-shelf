@@ -2,6 +2,7 @@ package com.qa.bookshelf.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,18 @@ public class ServiceUnitTest {
 		assertThat(this.service.getById(Id)).isEqualTo(book);
 
 		Mockito.verify(this.repo, Mockito.times(1)).findById(Id);
+	}
+
+	@Test
+	void testGetAll() {
+		final List<Book> books = List.of(new Book(1, "Design Patterns", "Freeman", 300, "Educational"),
+				new Book(2, "Design Patterns", "Freeman", 300, "Educational"));
+
+		Mockito.when(this.repo.findAll()).thenReturn(books);
+
+		assertThat(this.service.getAll()).isEqualTo(books);
+
+		Mockito.verify(this.repo, Mockito.times(1)).findAll();
 	}
 
 }
