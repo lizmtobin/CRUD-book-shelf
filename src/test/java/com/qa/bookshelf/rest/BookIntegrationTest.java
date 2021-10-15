@@ -105,8 +105,8 @@ public class BookIntegrationTest {
 		final String savedBookAsJSON = this.mapper
 				.writeValueAsString(new Book(1, "Design Patterns", "Freeman", 300, "Educational"));
 
-		this.mvc.perform(post("/book/create").contentType(MediaType.APPLICATION_JSON).content(testMarsupialAsJSON))
-				.andExpect(status().isCreated()).andExpect(content().json(savedMarsupialAsJSON));
+		this.mvc.perform(post("/book/create").contentType(MediaType.APPLICATION_JSON).content(testBookAsJSON))
+				.andExpect(status().isCreated()).andExpect(content().json(savedBookAsJSON));
 
 	}
 
