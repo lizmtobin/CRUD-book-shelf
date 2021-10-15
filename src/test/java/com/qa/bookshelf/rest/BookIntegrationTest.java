@@ -1,8 +1,11 @@
 package com.qa.bookshelf.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +46,17 @@ public class BookIntegrationTest {
 
 		this.mvc.perform(request).andExpect(checkStatus).andExpect(checkContent);
 
+	}
+
+	@Test
+	void testGetAll() throws Exception {
+		String savedBookAsJSON = this.mapper.writeValueAsString(List.of(new Book(1, "title", "author", null, "genre")));
+
+		RequestBuilder request = get("/book/books");
+
+		ResultMatcher checkStatus = status().isOk();
+		ResultMatcher checkContent = content().json(savedBookAsJSON);
+
+		this.mvc.perform(request).andExpect(checkStatus).andExpect(checkContent);
 	}
 }
